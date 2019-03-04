@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mednax.DeveloperInterview
 {
@@ -42,6 +43,26 @@ namespace Mednax.DeveloperInterview
 
             Console.WriteLine("Input the desired width: ");
             int width = Convert.ToInt32(Console.ReadLine());
+
+            // validation:
+            if(width == 0)
+            {
+                return;
+            }
+            if(num < 0 || num > 9)
+            {
+                return;
+            }
+            // do lines:
+            for (int ndx = width; ndx > 0; --ndx)
+            {
+                // do one line:
+                for (int ndy = 0; ndy < ndx; ++ndy)
+                {
+                    Console.Write(num.ToString());  // not WriteLine, but Write here
+                }
+                Console.WriteLine("");
+            }
         }
 
         /// <summary>
@@ -61,6 +82,26 @@ namespace Mednax.DeveloperInterview
                 new Employee {Name = "Julie", Age = 54, Department = "Javascript", Salary = 80000},
                 new Employee {Name = "Samantha", Age = 21, Department = "Design", Salary = 125000}
             };
+            // linq should work here... doing manually...
+            Dictionary<string, int> depts = new Dictionary<string, int>();
+            Dictionary<string, int> depts1 = new Dictionary<string, int>();
+            foreach(Employee empl in employees)
+            {
+                if (depts.Keys.Contains(empl.Department))
+                {
+                    depts[empl.Department] += empl.Salary;
+                    depts1[empl.Department] += 1;
+                }
+                else
+                {
+                    depts[empl.Department] = empl.Salary;
+                    depts1[empl.Department] = 1;
+                }
+            }
+            foreach(string dept in depts.Keys)
+            {
+                Console.WriteLine("Department: " + dept + ", average salary: " + depts[dept] / depts1[dept]);
+            }
         }
 
         internal class Employee
@@ -83,6 +124,23 @@ namespace Mednax.DeveloperInterview
             Console.WriteLine("---------------------------------------------------------------------");
             Console.WriteLine("The numbers in the array  are : ");
             Console.WriteLine(" 5, 9, 1, 2, 3, 7, 5, 6, 7, 3, 7, 6, 8, 5, 4, 9, 6, 2");
+
+            Dictionary<int, int> num2freq = new Dictionary<int, int>();
+            foreach(int num in arr1)
+            {
+                if(num2freq.Keys.Contains(num))
+                {
+                    num2freq[num] += 1;
+                }
+                else
+                {
+                    num2freq[num] = 1;
+                }
+            }
+            foreach(int num in num2freq.Keys)
+            {
+                Console.WriteLine("Number: " + num + ", frequency: " + num2freq[num]);
+            }
         }
 
         #region Palindrome 
@@ -140,6 +198,14 @@ namespace Mednax.DeveloperInterview
 
         private static bool IsPalindrome(string value)
         {
+            char[] chars = value.ToCharArray();
+            for (int ndx = 0; ndx < chars.Length / 2; ++ndx)
+            {
+                if(chars[ndx] != chars[chars.Length - 1 - ndx])
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
